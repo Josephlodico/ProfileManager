@@ -14,10 +14,61 @@ namespace ProfileManager
         static void Main(string[] args)
         {
             var profile = new Profile();
+
+            Console.Write("Enter First Name: ");
+            profile.FirstName = Console.ReadLine();
+
+            Console.Write("Enter Last Name: ");
+            profile.LastName = Console.ReadLine();
+
+            Console.Write("Enter Email: ");
+            profile.Email = Console.ReadLine();
+
+            Console.Write("Enter Phone Number: ");
+            profile.PhoneNumber = Console.ReadLine();
+
+            Console.Write("Enter Address: ");
+            profile.Address = Console.ReadLine();
+
+            Console.Write("Enter Gender: ");
+            profile.Gender = Console.ReadLine();
+
+            Console.Write("Enter Age: ");
+            profile.Age = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Enter Country: ");
+            profile.Country = Console.ReadLine();
+
+            Console.Write("Enter Province: ");
+            profile.Province = Console.ReadLine();
+
+            Console.Write("Enter Date of Birth (yyyy-MM-dd): ");
+            profile.DateOfBirth = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Enter Hobby: ");
+            profile.Hobby = Console.ReadLine();
+
+            Console.Write("Enter Favorite Game: ");
+            profile.FavoriteGame = Console.ReadLine();
+
+            Console.Write("Enter Favorite Anime: ");
+            profile.FavoriteAnime = Console.ReadLine();
+
+            Console.Write("Enter Pet: ");
+            profile.Pet = Console.ReadLine();
+
+            Console.Write("Enter Weight (kg): ");
+            profile.Weight = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("Enter Height (cm): ");
+            profile.Height = Convert.ToDouble(Console.ReadLine());
+
+            Console.Clear();
+
+             DisplayProfile(profile);
         }
-        public void DisplayProfile()
+        public static void DisplayProfile(Profile profile)
         {
-            var profile = new Profile();
             Console.WriteLine("===== PROFILE =====");
 
             Console.WriteLine($"Name: {profile.FirstName} {profile.LastName}");
