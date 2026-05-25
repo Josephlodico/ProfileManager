@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net;
 using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 /*                              USER PROFILE SYSTEM                           */
@@ -14,15 +15,15 @@ namespace ProfileManager
         static void Main(string[] args)
         {
             var profile = new Profile();
-
+            //Name of User
             Console.Write("Enter First Name: ");
             profile.FirstName = Console.ReadLine();
 
             Console.Write("Enter Last Name: ");
             profile.LastName = Console.ReadLine();
 
-            Console.Write("Enter Email: ");
-            profile.Email = Console.ReadLine();
+            //Email of User
+            profile.Email = GetValidEmail();
 
             Console.Write("Enter Phone Number: ");
             profile.PhoneNumber = Console.ReadLine();
@@ -89,6 +90,22 @@ namespace ProfileManager
 
             Console.WriteLine($"Weight: {profile.Weight}");
             Console.WriteLine($"Height: {profile.Height}");
+        }
+
+        static string GetValidEmail()
+        {
+            while (true)
+            {
+                Console.Write("Enter Email: ");
+                string? Email = Console.ReadLine();
+
+                if(!string.IsNullOrWhiteSpace(Email) && Email.Contains("@"))
+                {
+                    return Email;
+                }
+
+                Console.WriteLine("Invalid email. Please enter a valid email.");
+            }
         }
     }
 }
