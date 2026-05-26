@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProfileManager.Classes
 {
@@ -14,14 +11,45 @@ namespace ProfileManager.Classes
             while (true)
             {
                 Console.Write("Enter Email: ");
-                string? Email = Console.ReadLine();
+                string? email = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(Email) && Email.Contains("@"))
+                if (string.IsNullOrWhiteSpace(email))
                 {
-                    return Email;
+                    Console.WriteLine("Email cannot be empty.");
+                    continue;
                 }
 
-                Console.WriteLine("Invalid email. Please enter a valid email.");
+                if (!email.Contains("@"))
+                {
+                    Console.WriteLine("Email must contain @.");
+                    continue;
+                }
+
+                string[] parts = email.Split('@');
+                if (parts.Length != 2)
+                {
+                    Console.WriteLine("Email can only contain one @.");
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(parts[0]))
+                {
+                    Console.WriteLine("Email must have a name before @.");
+                    continue;
+                }
+                if (string.IsNullOrWhiteSpace(parts[1]))
+                {
+                    Console.WriteLine("Email must have an email type after @.");
+                    continue;
+                }
+
+                //Must end with.com
+                if (!parts[1].EndsWith(".com"))
+                {
+                    Console.WriteLine("Email must end with .com");
+                    continue;
+                }
+                return email;
             }
         }
 
