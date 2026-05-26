@@ -1,7 +1,6 @@
 ﻿using ProfileManager.Classes;
 using System;
 using System.Collections.Generic;
-
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
@@ -12,8 +11,8 @@ namespace ProfileManager
             var p = new Profile();
 
             //Name of User
-            p.FirstName = GetInput("Enter First Name: ");
-            p.LastName = GetInput("Enter Last Name: ");
+            p.FirstName = Validation.GetValidName("Enter FirstName: ");
+            p.LastName = Validation.GetValidName("Enter LastName: ");
 
             //Email of User
             p.Email = Validation.GetValidEmail();
