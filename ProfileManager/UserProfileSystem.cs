@@ -8,11 +8,14 @@ namespace ProfileManager
     {
         static void Main(string[] args)
         {
+            MainTitle();
             var p = new Profile();
 
             //Name of User
-            p.FirstName = Validation.GetValidName("Enter FirstName: ");
-            p.LastName = Validation.GetValidName("Enter LastName: ");
+            p.FirstName = Validation.GetValidName("Enter First Name: ");
+            GetSpacing();
+            p.LastName = Validation.GetValidName("Enter Last Name: ");
+            GetSpacing();
 
             //Email of User
             p.Email = Validation.GetValidEmail();
@@ -73,6 +76,19 @@ namespace ProfileManager
         {
             Console.Write(message);
             return Convert.ToDateTime(Console.ReadLine());
+        }
+        public static void GetSpacing()
+        {
+            Console.WriteLine("=========================================");
+        }
+        public static void MainTitle()
+        {
+            Console.Clear();
+            string title = "PROFILE MANAGER";
+            Console.WriteLine(new string('=', Console.WindowWidth));
+            int spaces = (Console.WindowWidth - title.Length) / 2;
+            Console.WriteLine(new string(' ', spaces) + title);
+            Console.WriteLine(new string('=', Console.WindowWidth));
         }
 
 
