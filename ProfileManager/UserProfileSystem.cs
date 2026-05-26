@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
@@ -10,84 +9,96 @@ namespace ProfileManager
     {
         static void Main(string[] args)
         {
-            var profile = new Profile();
-            //Name of User
-            Console.Write("Enter First Name: ");
-            profile.FirstName = Console.ReadLine();
+            var p = new Profile();
 
-            Console.Write("Enter Last Name: ");
-            profile.LastName = Console.ReadLine();
+            //Name of User
+            p.FirstName = GetInput("Enter First Name: ");
+            p.LastName = GetInput("Enter Last Name: ");
 
             //Email of User
-            profile.Email = Validation.GetValidEmail();
+            p.Email = Validation.GetValidEmail();
 
-            Console.Write("Enter Phone Number: ");
-            profile.PhoneNumber = Console.ReadLine();
+            // Basic Info
+            p.PhoneNumber = GetInput("Enter Phone Number: ");
+            p.Address = GetInput("Enter Address: ");
+            p.Gender = GetInput("Enter Gender: ");
 
-            Console.Write("Enter Address: ");
-            profile.Address = Console.ReadLine();
+            // Numbers
+            p.Age = GetIntInput("Enter Age: ");
 
-            Console.Write("Enter Gender: ");
-            profile.Gender = Console.ReadLine();
+            // Location
+            p.Country = GetInput("Enter Country: ");
+            p.Province = GetInput("Enter Province: ");
 
-            Console.Write("Enter Age: ");
-            profile.Age = Convert.ToInt32(Console.ReadLine());
+            // Date
+            p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
 
-            Console.Write("Enter Country: ");
-            profile.Country = Console.ReadLine();
+            // Favorites
+            p.Hobby = GetInput("Enter Hobby");
+            p.FavoriteGame = GetInput("Enter Favorite Game: ");
+            p.FavoriteAnime = GetInput("Enter Favorite Anime: ");
+            p.Pets = GetInput("Enter your Favorite Pet: ");
 
-            Console.Write("Enter Province: ");
-            profile.Province = Console.ReadLine();
-
-            Console.Write("Enter Date of Birth (yyyy-MM-dd): ");
-            profile.DateOfBirth = Convert.ToDateTime(Console.ReadLine());
-
-            Console.Write("Enter Hobby: ");
-            profile.Hobby = Console.ReadLine();
-
-            Console.Write("Enter Favorite Game: ");
-            profile.FavoriteGame = Console.ReadLine();
-
-            Console.Write("Enter Favorite Anime: ");
-            profile.FavoriteAnime = Console.ReadLine();
-
-            Console.Write("Enter Pet: ");
-            profile.Pet = Console.ReadLine();
-
-            Console.Write("Enter Weight (kg): ");
-            profile.Weight = Convert.ToDouble(Console.ReadLine());
-
-            Console.Write("Enter Height (cm): ");
-            profile.Height = Convert.ToDouble(Console.ReadLine());
+            //Physical Info
+            p.Weight = GetDoubleInput("Enter Weigth (kg): ");
+            p.Height = GetDoubleInput("Enter Height (cm)L ");
 
             Console.Clear();
 
-             DisplayProfile(profile);
+            DisplayProfile(p);
         }
-        public static void DisplayProfile(Profile profile)
+        // STRING INPUT
+        public static string GetInput(string message)
+        {
+            Console.Write(message);
+            return Console.ReadLine()!;
+            
+        }
+
+        // INTEGER INPUT
+        public static int GetIntInput(string message)
+        {
+            Console.Write(message);
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        //Double Input
+        public static double GetDoubleInput(string message)
+        {
+            Console.Write(message);
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        //Date INPUT
+        public static DateTime GetDateInput(string message)
+        {
+            Console.Write(message);
+            return Convert.ToDateTime(Console.ReadLine());
+        }
+
+
+        public static void DisplayProfile(Profile p)
         {
             Console.WriteLine("===== PROFILE =====");
 
-            Console.WriteLine($"Name: {profile.FirstName} {profile.LastName}");
-            Console.WriteLine($"Email: {profile.Email}");
-            Console.WriteLine($"Phone Number: {profile.PhoneNumber}");
-            Console.WriteLine($"Address: {profile.Address}");
+            Console.WriteLine($"Name: {p.FirstName} {p.LastName}");
+            Console.WriteLine($"Email: {p.Email}");
+            Console.WriteLine($"Phone Number: {p.PhoneNumber}");
+            Console.WriteLine($"Address: {p.Address}");
 
-            Console.WriteLine($"Age: {profile.Age}");
-            Console.WriteLine($"Gender: {profile.Gender}");
-            Console.WriteLine($"Country: {profile.Country}");
-            Console.WriteLine($"Province: {profile.Province}");
-            Console.WriteLine($"Date of Birth: {profile.DateOfBirth}");
+            Console.WriteLine($"Age: {p.Age}");
+            Console.WriteLine($"Gender: {p.Gender}");
+            Console.WriteLine($"Country: {p.Country}");
+            Console.WriteLine($"Province: {p.Province}");
+            Console.WriteLine($"Date of Birth: {p.DateOfBirth}");
 
-            Console.WriteLine($"Hobby: {profile.Hobby}");
-            Console.WriteLine($"Favorite Game: {profile.FavoriteGame}");
-            Console.WriteLine($"Favorite Anime: {profile.FavoriteAnime}");
-            Console.WriteLine($"Pet: {profile.Pet}");
+            Console.WriteLine($"Hobby: {p.Hobby}");
+            Console.WriteLine($"Favorite Game: {p.FavoriteGame}");
+            Console.WriteLine($"Favorite Anime: {p.FavoriteAnime}");
+            Console.WriteLine($"Pet: {p.Pets}");
 
-            Console.WriteLine($"Weight: {profile.Weight}");
-            Console.WriteLine($"Height: {profile.Height}");
+            Console.WriteLine($"Weight: {p.Weight}");
+            Console.WriteLine($"Height: {p.Height}");
         }
-
-        
     }
 }

@@ -18,7 +18,7 @@ namespace ProfileManager.Classes
         public string? Hobby { get; set; }  
         public string? FavoriteGame { get; set; }
         public string? FavoriteAnime { get; set; }
-        public string? Pet { get; set; }
+        public string? Pets { get; set; }
 
 
         public double Weight { get; set; }

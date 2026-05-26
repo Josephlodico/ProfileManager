@@ -23,5 +23,6 @@ namespace ProfileManager.Classes
                 Console.WriteLine("Invalid email. Please enter a valid email.");
             }
         }
+
     }
 }
