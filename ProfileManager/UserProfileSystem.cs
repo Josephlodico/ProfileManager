@@ -1,6 +1,7 @@
 ﻿using ProfileManager.Classes;
 using System;
 using System.Collections.Generic;
+
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
@@ -8,17 +9,20 @@ namespace ProfileManager
     {
         static void Main(string[] args)
         {
+            IValidator emailValidator = new EmailValidator();
+            IValidator nameValidator = new NameValidator();
+
             MainTitle();
             var p = new Profile();
 
             //Name of User
-            p.FirstName = Validation.GetValidName("Enter First Name: ");
+            p.FirstName = GetValidInput("Enter First Name: ", nameValidator);
             GetSpacing();
-            p.LastName = Validation.GetValidName("Enter Last Name: ");
+            p.LastName = GetValidInput("Enter Last Name: ", nameValidator);
             GetSpacing();
 
             //Email of User
-            p.Email = Validation.GetValidEmail();
+            p.Email = GetValidInput("Enter Email: ", emailValidator);
 
             // Basic Info
             p.PhoneNumber = GetInput("Enter Phone Number: ");
@@ -49,6 +53,20 @@ namespace ProfileManager
 
             DisplayProfile(p);
         }
+        public static string GetValidInput(string message, IValidator validator)
+        {
+            while (true)
+            {
+                Console.Write(message);
+                string input = Console.ReadLine();
+
+                if (validator.IsValid(input))
+                {
+                    return input;
+                }
+                Console.WriteLine("Invalid input. Try again.");
+            }
+        }
         // STRING INPUT
         public static string GetInput(string message)
         {
@@ -67,7 +85,7 @@ namespace ProfileManager
         //Double Input
         public static double GetDoubleInput(string message)
         {
-            Console.Write(message);
+            Console.WriteLine(message);
             return Convert.ToInt32(Console.ReadLine());
         }
 
@@ -81,6 +99,8 @@ namespace ProfileManager
         {
             Console.WriteLine("=========================================");
         }
+        
+
         public static void MainTitle()
         {
             Console.Clear();
@@ -90,7 +110,6 @@ namespace ProfileManager
             Console.WriteLine(new string(' ', spaces) + title);
             Console.WriteLine(new string('=', Console.WindowWidth));
         }
-
 
         public static void DisplayProfile(Profile p)
         {
