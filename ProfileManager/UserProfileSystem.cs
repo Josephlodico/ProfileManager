@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
-    class userProfileSystem
+    class UserProfileSystem
     {
         static void Main(string[] args)
         {
@@ -58,7 +58,7 @@ namespace ProfileManager
             while (true)
             {
                 Console.Write(message);
-                string input = Console.ReadLine();
+                string input = Console.ReadLine()!;
 
                 if (validator.IsValid(input))
                 {
