@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace ProfileManager.Classes
+﻿using ProfileManager.Classes;
+
+namespace ProfileManager.Validators
 {
-    public interface IValidator
-    {
-        bool IsValid(string input);
-    }
     public class EmailValidator : IValidator
     {
         public bool IsValid(string input)
@@ -49,32 +44,6 @@ namespace ProfileManager.Classes
                 return false;
             }
             return true;
-        }
-    }
-    public class NameValidator : IValidator
-    {
-        private readonly int _maxLength;
-
-        public NameValidator(int maxLenght)
-        {
-            _maxLength = maxLenght;
-        }
-
-        public bool IsValid(string input)
-        {
-            //Check if empty
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Name cannot be empty.");
-                return false;
-            }
-
-            if (input.Length > _maxLength)
-            {
-                Console.WriteLine($"Name cannot be more than {_maxLength} characters long.");
-                return false;
-            }
-            return input.All(char.IsLetter);
         }
     }
 }

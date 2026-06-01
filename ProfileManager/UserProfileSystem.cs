@@ -1,16 +1,19 @@
 ﻿using ProfileManager.Classes;
+using ProfileManager.Validators;
 using System;
 using System.Collections.Generic;
 
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
-    class UserProfileSystem
+    partial class UserProfileSystem
     {
         static void Main(string[] args)
         {
             IValidator emailValidator = new EmailValidator();
             IValidator nameValidator = new NameValidator(20);
+            IValidator phoneValidator = new PhoneValidator();
+
 
             MainTitle();
             var p = new Profile();
@@ -18,16 +21,23 @@ namespace ProfileManager
             //Name of User
             p.FirstName = GetValidInput("Enter First Name: ", nameValidator);
             GetSpacing();
+
             p.LastName = GetValidInput("Enter Last Name: ", nameValidator);
             GetSpacing();
 
             //Email of User
             p.Email = GetValidInput("Enter Email: ", emailValidator);
+            GetSpacing();
 
             // Basic Info
-            p.PhoneNumber = GetInput("Enter Phone Number: ");
+            p.PhoneNumber = GetValidInput("Enter Phone Number: ", phoneValidator);
+            GetSpacing();
+            
             p.Address = GetInput("Enter Address: ");
+            GetSpacing();
+
             p.Gender = GetInput("Enter Gender: ");
+            GetSpacing();
 
             // Numbers
             p.Age = GetIntInput("Enter Age: ");
