@@ -50,26 +50,31 @@ namespace ProfileManager.Classes
             }
             return true;
         }
-     }
-        public class NameValidator : IValidator
-        {
-            public bool IsValid(string input)
-            {
-                //Check if empty
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    Console.WriteLine("Name cannot be empty.");
-                    return false;
-                }
+    }
+    public class NameValidator : IValidator
+    {
+        private readonly int _maxLength;
 
-                foreach (char c in input)
-                {
-                    if (!char.IsLetter(c))
-                    {
-                        return false;
-                    }
-                }
-                return true;
+        public NameValidator(int maxLenght)
+        {
+            _maxLength = maxLenght;
+        }
+
+        public bool IsValid(string input)
+        {
+            //Check if empty
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Name cannot be empty.");
+                return false;
             }
+
+            if (input.Length > _maxLength)
+            {
+                Console.WriteLine($"Name cannot be more than {_maxLength} characters long.");
+                return false;
+            }
+            return input.All(char.IsLetter);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace ProfileManager
         static void Main(string[] args)
         {
             IValidator emailValidator = new EmailValidator();
-            IValidator nameValidator = new NameValidator();
+            IValidator nameValidator = new NameValidator(20);
 
             MainTitle();
             var p = new Profile();
