@@ -13,7 +13,8 @@ namespace ProfileManager
             IValidator emailValidator = new EmailValidator();
             IValidator nameValidator = new NameValidator(20);
             IValidator phoneValidator = new PhoneValidator();
-
+            IValidator genderValidator = new GenderValidator();
+            IValidator ageValidator = new AgeValidator();
 
             MainTitle();
             var p = new Profile();
@@ -36,12 +37,12 @@ namespace ProfileManager
             p.Address = GetInput("Enter Address: ");
             GetSpacing();
 
-            p.Gender = GetInput("Enter Gender: ");
+            p.Gender = GetValidInput("Enter Gender: ", genderValidator);
             GetSpacing();
 
             // Numbers
-            p.Age = GetIntInput("Enter Age: ");
-
+            p.Age = Convert.ToInt32(GetValidInput("Enter Age: ", ageValidator));
+            GetSpacing();
             // Location
             p.Country = GetInput("Enter Country: ");
             p.Province = GetInput("Enter Province: ");
@@ -96,7 +97,7 @@ namespace ProfileManager
         public static double GetDoubleInput(string message)
         {
             Console.WriteLine(message);
-            return Convert.ToInt32(Console.ReadLine());
+            return Convert.ToDouble(Console.ReadLine());
         }
 
         //Date INPUT

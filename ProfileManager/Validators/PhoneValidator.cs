@@ -1,6 +1,5 @@
 ﻿using ProfileManager.Classes;
-
-/*                              USER PROFILE SYSTEM                           */
+                           
 namespace ProfileManager.Validators
 {
     public class PhoneValidator : IValidator

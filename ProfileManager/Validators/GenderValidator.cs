@@ -1,0 +1,25 @@
+﻿using ProfileManager.Classes;
+
+namespace ProfileManager.Validators
+{
+    public class GenderValidator : IValidator
+    {
+        public bool IsValid(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Gender cannot be empty.");
+                return false;
+            }
+
+            input = input.Trim().ToLower();
+
+            if (input == "male" || input == "female" || input == "other")
+            {
+                return true;
+            }
+            Console.WriteLine("Gender must be Male, Female, or Other.");
+            return false;
+        }
+    }
+}
