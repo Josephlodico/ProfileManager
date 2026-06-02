@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /*                              USER PROFILE SYSTEM                           */
 namespace ProfileManager
 {
-    partial class UserProfileSystem
+    class UserProfileSystem
     {
         static void Main(string[] args)
         {
