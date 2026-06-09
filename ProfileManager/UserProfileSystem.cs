@@ -51,14 +51,14 @@ namespace ProfileManager
             p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
 
             // Favorites
-            p.Hobby = GetInput("Enter Hobby");
+            p.Hobby = GetInput("Enter Hobby: ");
             p.FavoriteGame = GetInput("Enter Favorite Game: ");
             p.FavoriteAnime = GetInput("Enter Favorite Anime: ");
             p.Pets = GetInput("Enter your Favorite Pet: ");
 
             //Physical Info
-            p.Weight = GetDoubleInput("Enter Weigth (kg): ");
-            p.Height = GetDoubleInput("Enter Height (cm)L ");
+            p.Weight = GetDoubleInput("Enter Weight (kg): ");
+            p.Height = GetDoubleInput("Enter Height (cm): ");
 
             Console.Clear();
 
@@ -96,15 +96,25 @@ namespace ProfileManager
         //Double Input
         public static double GetDoubleInput(string message)
         {
-            Console.WriteLine(message);
-            return Convert.ToDouble(Console.ReadLine());
+            while (true)
+            {
+                Console.Write(message);
+                if (double.TryParse(Console.ReadLine(), out double result))
+                    return result;
+                Console.WriteLine("Invalid input. Please enter a number.");
+            }
         }
 
         //Date INPUT
         public static DateTime GetDateInput(string message)
         {
-            Console.Write(message);
-            return Convert.ToDateTime(Console.ReadLine());
+            while (true)
+            {
+                Console.Write(message);
+                if (DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime result))
+                    return result;
+                Console.WriteLine("Invalid date. Please use the format yyyy-MM-dd (e.g., 2000-01-25).");
+            }
         }
         public static void GetSpacing()
         {

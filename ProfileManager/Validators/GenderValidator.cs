@@ -6,13 +6,13 @@ namespace ProfileManager.Validators
     {
         public bool IsValid(string input)
         {
+            input = input.Trim().ToLower();
+
             if (string.IsNullOrWhiteSpace(input))
             {
                 Console.WriteLine("Gender cannot be empty.");
                 return false;
             }
-
-            input = input.Trim().ToLower();
 
             if (input == "male" || input == "female" || input == "other")
             {

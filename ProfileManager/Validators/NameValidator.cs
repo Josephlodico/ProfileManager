@@ -9,9 +9,9 @@ namespace ProfileManager.Validators
     {
         private readonly int _maxLength;
 
-        public NameValidator(int maxLenght)
+        public NameValidator(int maxLength)
         {
-            _maxLength = maxLenght;
+            _maxLength = maxLength;
         }
 
         public bool IsValid(string input)
@@ -28,7 +28,12 @@ namespace ProfileManager.Validators
                 Console.WriteLine($"Name cannot be more than {_maxLength} characters long.");
                 return false;
             }
-            return input.All(char.IsLetter);
+            if (!input.All(char.IsLetter))
+            {
+                Console.WriteLine("Name can only contain letters.");
+                return false;
+            }
+            return true;
         }
     }
 }

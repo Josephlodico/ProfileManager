@@ -37,10 +37,11 @@ namespace ProfileManager.Validators
                 return false;
             }
 
-            //Must end with.com
-            if (!parts[1].EndsWith(".com"))
+            string domain = parts[1];
+            int dotIndex = domain.LastIndexOf('.');
+            if (dotIndex <= 0 || dotIndex == domain.Length - 1)
             {
-                Console.WriteLine("Email must end with .com");
+                Console.WriteLine("Email must have a valid domain (e.g., example.com, example.ca).");
                 return false;
             }
             return true;
