@@ -15,6 +15,9 @@ namespace ProfileManager
             IValidator phoneValidator = new PhoneValidator();
             IValidator genderValidator = new GenderValidator();
             IValidator ageValidator = new AgeValidator();
+            IValidator addressValidator = new AddressValidator();
+            IValidator countryValidator = new CountryValidator();
+            IValidator provinceValidator = new ProvinceValidator();
 
             MainTitle();
             var p = new Profile();
@@ -34,7 +37,7 @@ namespace ProfileManager
             p.PhoneNumber = GetValidInput("Enter Phone Number: ", phoneValidator);
             GetSpacing();
             
-            p.Address = GetInput("Enter Address: ");
+            p.Address = GetValidInput("Enter Address: ", addressValidator);
             GetSpacing();
 
             p.Gender = GetValidInput("Enter Gender: ", genderValidator);
@@ -44,8 +47,8 @@ namespace ProfileManager
             p.Age = Convert.ToInt32(GetValidInput("Enter Age: ", ageValidator));
             GetSpacing();
             // Location
-            p.Country = GetInput("Enter Country: ");
-            p.Province = GetInput("Enter Province: ");
+            p.Country = GetValidInput("Enter Country: ", countryValidator);
+            p.Province = GetValidInput("Enter Province: ", provinceValidator);
 
             // Date
             p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
