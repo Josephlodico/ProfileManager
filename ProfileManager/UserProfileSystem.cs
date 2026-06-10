@@ -22,44 +22,53 @@ namespace ProfileManager
             MainTitle();
             var p = new Profile();
 
-            //Name of User
+            SectionTitle("Profile Information");
+
             p.FirstName = GetValidInput("Enter First Name: ", nameValidator);
             GetSpacing();
-
             p.LastName = GetValidInput("Enter Last Name: ", nameValidator);
             GetSpacing();
+            p.Gender = GetValidInput("Enter Gender: ", genderValidator);
+            GetSpacing();
+            p.Age = Convert.ToInt32(GetValidInput("Enter Age: ", ageValidator));
+            GetSpacing();
+            p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
+            GetSpacing();
 
-            //Email of User
+            SectionTitle("Contact Information");
+
             p.Email = GetValidInput("Enter Email: ", emailValidator);
             GetSpacing();
-
-            // Basic Info
             p.PhoneNumber = GetValidInput("Enter Phone Number: ", phoneValidator);
             GetSpacing();
-            
             p.Address = GetValidInput("Enter Address: ", addressValidator);
             GetSpacing();
 
-            p.Gender = GetValidInput("Enter Gender: ", genderValidator);
-            GetSpacing();
 
-            // Numbers
-            p.Age = Convert.ToInt32(GetValidInput("Enter Age: ", ageValidator));
-            GetSpacing();
-            // Location
+            SectionTitle("Location");
+
             p.Country = GetValidInput("Enter Country: ", countryValidator);
+            GetSpacing();
             p.Province = GetValidInput("Enter Province: ", provinceValidator);
+            GetSpacing();
 
-            // Date
-            p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
 
-            // Favorites
+            SectionTitle("Hobbies and Interests");
+
             p.Hobby = GetInput("Enter Hobby: ");
-            p.FavoriteGame = GetInput("Enter Favorite Game: ");
-            p.FavoriteAnime = GetInput("Enter Favorite Anime: ");
-            p.Pets = GetInput("Enter your Favorite Pet: ");
+            GetSpacing();
 
-            //Physical Info
+            p.FavoriteGame = GetInput("Enter Favorite Game: ");
+            GetSpacing();
+
+            p.FavoriteAnime = GetInput("Enter Favorite Anime: ");
+            GetSpacing();
+
+            p.Pets = GetInput("Enter your Favorite Pet: ");
+            GetSpacing();
+
+            SectionTitle("Physical Information");
+
             p.Weight = GetDoubleInput("Enter Weight (kg): ");
             p.Height = GetDoubleInput("Enter Height (cm): ");
 
@@ -121,10 +130,15 @@ namespace ProfileManager
         }
         public static void GetSpacing()
         {
-            Console.WriteLine("=========================================");
+            Console.WriteLine("==========================================");
         }
         
-
+        public static void SectionTitle(string title)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Topic: {title}");
+            Console.WriteLine("------------------------------------------");
+        }
         public static void MainTitle()
         {
             Console.Clear();
