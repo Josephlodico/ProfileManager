@@ -10,12 +10,15 @@ namespace ProfileManager
     {
         static void Main(string[] args)
         {
-            IValidator emailValidator = new EmailValidator();
             IValidator nameValidator = new NameValidator(20);
-            IValidator phoneValidator = new PhoneValidator();
             IValidator genderValidator = new GenderValidator();
             IValidator ageValidator = new AgeValidator();
+            IValidator dateOfBirthValidator = new DateOfBirthValidator();
+
+            IValidator emailValidator = new EmailValidator();
+            IValidator phoneValidator = new PhoneValidator();
             IValidator addressValidator = new AddressValidator();
+
             IValidator countryValidator = new CountryValidator();
             IValidator provinceValidator = new ProvinceValidator();
 
@@ -32,7 +35,7 @@ namespace ProfileManager
             GetSpacing();
             p.Age = Convert.ToInt32(GetValidInput("Enter Age: ", ageValidator));
             GetSpacing();
-            p.DateOfBirth = GetDateInput("Enter Date of Birth (yyyy-MM-dd): ");
+            p.DateOfBirth = DateTime.Parse(GetValidInput("Enter Date of Birth (yyyy-MM-dd): ", dateOfBirthValidator));
             GetSpacing();
 
             SectionTitle("Contact Information");
@@ -117,17 +120,6 @@ namespace ProfileManager
             }
         }
 
-        //Date INPUT
-        public static DateTime GetDateInput(string message)
-        {
-            while (true)
-            {
-                Console.Write(message);
-                if (DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime result))
-                    return result;
-                Console.WriteLine("Invalid date. Please use the format yyyy-MM-dd (e.g., 2000-01-25).");
-            }
-        }
         public static void GetSpacing()
         {
             Console.WriteLine("==========================================");
@@ -154,15 +146,16 @@ namespace ProfileManager
             Console.WriteLine("===== PROFILE =====");
 
             Console.WriteLine($"Name: {p.FirstName} {p.LastName}");
+            Console.WriteLine($"Gender: {p.Gender}");
+            Console.WriteLine($"Age: {p.Age}");
+            Console.WriteLine($"Date of Birth: {p.DateOfBirth}");
+
             Console.WriteLine($"Email: {p.Email}");
             Console.WriteLine($"Phone Number: {p.PhoneNumber}");
             Console.WriteLine($"Address: {p.Address}");
 
-            Console.WriteLine($"Age: {p.Age}");
-            Console.WriteLine($"Gender: {p.Gender}");
             Console.WriteLine($"Country: {p.Country}");
             Console.WriteLine($"Province: {p.Province}");
-            Console.WriteLine($"Date of Birth: {p.DateOfBirth}");
 
             Console.WriteLine($"Hobby: {p.Hobby}");
             Console.WriteLine($"Favorite Game: {p.FavoriteGame}");
