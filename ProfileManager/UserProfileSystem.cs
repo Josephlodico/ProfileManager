@@ -166,6 +166,10 @@ namespace ProfileManager
 
             Console.WriteLine($"Weight: {p.Weight}");
             Console.WriteLine($"Height: {p.Height}");
+
+            
         }
+
+        
     }
 }
