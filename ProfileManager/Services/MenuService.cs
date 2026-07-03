@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace ProfileManager.Services
     public class MenuService
     {
         public void ShowMenu(
-            Profile p,
+            ref Profile p,
             IValidator nameValidator,
             IValidator genderValidator,
             IValidator ageValidator,
