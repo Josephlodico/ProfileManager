@@ -1,29 +1,11 @@
-﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ProfileManager.Interfaces;
 using ProfileManager.Models;
 
 namespace ProfileManager.Services
 {
     public class MenuService
     {
-        public void ShowMenu(
-            ref Profile p,
-            IValidator nameValidator,
-            IValidator genderValidator,
-            IValidator ageValidator,
-            IValidator dateOfBirthValidator,
-            IValidator emailValidator,
-            IValidator phoneValidator,
-            IValidator addressValidator,
-            IValidator countryValidator,
-            IValidator provinceValidator,
-            IValidator textValidator)
+        public void ShowMenu(ref Profile p, ProfileValidators validators)
         {
             while (true)
             {
@@ -40,24 +22,13 @@ namespace ProfileManager.Services
                 switch (choice)
                 {
                     case "1":
-                        UserProfileSystem.DisplayProfile(p);
+                        ProfileService.DisplayProfile(p);
                         break;
                     case "2":
-                        UserProfileSystem.EditProfile(
-                            p,
-                            nameValidator,
-                            genderValidator,
-                            ageValidator,
-                            dateOfBirthValidator,
-                            emailValidator,
-                            phoneValidator,
-                            addressValidator,
-                            countryValidator,
-                            provinceValidator,
-                            textValidator);
+                        ProfileService.EditProfile(p, validators);
                         break;
                     case "3":
-                        if (UserProfileSystem.Confirm("Are you sure you want to delete this profile"))
+                        if (ProfileService.Confirm("Are you sure you want to delete this profile"))
                         {
                             p = new Profile(); // Reset the profile to a new instance
                             Console.WriteLine("Profile deleted.");
@@ -71,7 +42,6 @@ namespace ProfileManager.Services
                         break;
                 }
             }
-
         }
     }
 }
