@@ -1,4 +1,5 @@
-﻿using ProfileManager.Classes;
+﻿using ProfileManager.Models;
+using ProfileManager.Interfaces;
 using ProfileManager.Validators;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace ProfileManager
 
             IValidator countryValidator = new CountryValidator();
             IValidator provinceValidator = new ProvinceValidator();
+            IValidator textValidator = new TextValidator();
 
             MainTitle();
             var p = new Profile();
@@ -58,16 +60,16 @@ namespace ProfileManager
 
             SectionTitle("Hobbies and Interests");
 
-            p.Hobby = GetInput("Enter Hobby: ");
+            p.Hobby = GetValidInput("Enter Hobby: ", textValidator);
             GetSpacing();
 
-            p.FavoriteGame = GetInput("Enter Favorite Game: ");
+            p.FavoriteGame = GetValidInput("Enter Favorite Game: ", textValidator);
             GetSpacing();
 
-            p.FavoriteAnime = GetInput("Enter Favorite Anime: ");
+            p.FavoriteAnime = GetValidInput("Enter Favorite Anime: ", textValidator);
             GetSpacing();
 
-            p.Pets = GetInput("Enter your Favorite Pet: ");
+            p.Pets = GetValidInput("Enter your Favorite Pet: ", textValidator);
             GetSpacing();
 
             SectionTitle("Physical Information");
