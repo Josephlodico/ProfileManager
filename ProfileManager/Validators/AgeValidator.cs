@@ -1,5 +1,5 @@
-﻿using ProfileManager.Classes;
-                           
+﻿using ProfileManager.Interfaces;
+
 namespace ProfileManager.Validators
 {
     public class AgeValidator : IValidator

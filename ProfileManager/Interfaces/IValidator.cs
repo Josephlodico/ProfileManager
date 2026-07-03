@@ -1,5 +1,4 @@
-﻿
-namespace ProfileManager.Classes
+﻿namespace ProfileManager.Interfaces
 {
     public interface IValidator
     {

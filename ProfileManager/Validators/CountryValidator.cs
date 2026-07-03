@@ -1,4 +1,4 @@
-using ProfileManager.Classes;
+using ProfileManager.Interfaces;
 
 namespace ProfileManager.Validators
 {

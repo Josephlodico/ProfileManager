@@ -1,5 +1,5 @@
 ﻿/*                              USER PROFILE SYSTEM                           */
-namespace ProfileManager.Classes
+namespace ProfileManager.Models
 {
     public class Profile
     {
