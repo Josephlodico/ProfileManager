@@ -1,20 +1,23 @@
-using System;
+using System.Collections.Generic;
 using ProfileManager.Models;
 
 namespace ProfileManager.Services
 {
     public class MenuService
     {
-        public void ShowMenu(ref Profile p, ProfileValidators validators)
+        public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
         {
             while (true)
             {
                 Console.WriteLine();
                 Console.WriteLine("===== MENU =====");
-                Console.WriteLine("1. View Profile");
-                Console.WriteLine("2. Edit Profile");
-                Console.WriteLine("3. Delete Profile");
-                Console.WriteLine("4. Exit");
+                Console.WriteLine($"You have {profiles.Count} profile(s).");
+                Console.WriteLine("1. Create New Profile");
+                Console.WriteLine("2. View a Profile");
+                Console.WriteLine("3. Edit a Profile");
+                Console.WriteLine("4. Delete a Profile");
+                Console.WriteLine("5. Save Profiles to File");
+                Console.WriteLine("6. Exit");
                 Console.Write("Choose an option: ");
 
                 string choice = Console.ReadLine()!;
@@ -22,21 +25,50 @@ namespace ProfileManager.Services
                 switch (choice)
                 {
                     case "1":
-                        ProfileService.DisplayProfile(p);
+                        profiles.Add(ProfileService.CreateProfile(validators));
+                        Console.WriteLine("Profile created.");
                         break;
+
                     case "2":
-                        ProfileService.EditProfile(p, validators);
-                        break;
-                    case "3":
-                        if (ProfileService.Confirm("Are you sure you want to delete this profile"))
                         {
-                            p = new Profile(); // Reset the profile to a new instance
-                            Console.WriteLine("Profile deleted.");
+                            int index = ProfileService.SelectProfileIndex(profiles, "view");
+                            if (index >= 0)
+                                ProfileService.DisplayProfile(profiles[index]);
+                            break;
                         }
-                        break;
+
+                    case "3":
+                        {
+                            int index = ProfileService.SelectProfileIndex(profiles, "edit");
+                            if (index >= 0)
+                                ProfileService.EditProfile(profiles[index], validators);
+                            break;
+                        }
+
                     case "4":
+                        {
+                            int index = ProfileService.SelectProfileIndex(profiles, "delete");
+                            if (index >= 0 && ProfileService.Confirm("Are you sure you want to delete this profile"))
+                            {
+                                profiles.RemoveAt(index);
+                                Console.WriteLine("Profile deleted.");
+                            }
+                            break;
+                        }
+
+                    case "5":
+                        {
+                            string path = ProfileService.SaveProfilesToFile(profiles);
+                            Console.WriteLine($"Profiles saved to {path}");
+                            if (ProfileService.Confirm("Open the file in Notepad now"))
+                                ProfileService.OpenFile(path);
+                            break;
+                        }
+
+                    case "6":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
+
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
                         break;
