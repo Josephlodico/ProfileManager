@@ -7,6 +7,27 @@ namespace ProfileManager.Services
 {
     public static class ProfileService
     {
+        private static readonly string[] EditFieldOptions =
+        [
+            "1. First Name",
+            "2. Last Name",
+            "3. Gender",
+            "4. Age",
+            "5. Date of Birth",
+            "6. Email",
+            "7. Phone Number",
+            "8. Address",
+            "9. Country",
+            "10. Province",
+            "11. Hobby",
+            "12. Favorite Game",
+            "13. Favorite Anime",
+            "14. Pet",
+            "15. Weight",
+            "16. Height",
+            "0. Back to Main Menu",
+        ];
+
         public static bool Confirm(string message)
         {
             while (true)
@@ -37,14 +58,14 @@ namespace ProfileManager.Services
             ConsoleHelper.GetSpacing();
             p.Age = Convert.ToInt32(ConsoleHelper.GetValidInput("Enter Age: ", validators.Age));
             ConsoleHelper.GetSpacing();
-            p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth));
+            p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidMaskedInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth, "####-##-##"));
             ConsoleHelper.GetSpacing();
 
             ConsoleHelper.SectionTitle("Contact Information");
 
             p.Email = ConsoleHelper.GetValidInput("Enter Email: ", validators.Email);
             ConsoleHelper.GetSpacing();
-            p.PhoneNumber = ConsoleHelper.GetValidInput("Enter Phone Number: ", validators.Phone);
+            p.PhoneNumber = ConsoleHelper.GetValidMaskedInput("Enter Phone Number: ", validators.Phone, "###-###-####");
             ConsoleHelper.GetSpacing();
             p.Address = ConsoleHelper.GetValidInput("Enter Address: ", validators.Address);
             ConsoleHelper.GetSpacing();
@@ -84,23 +105,7 @@ namespace ProfileManager.Services
             {
                 Console.WriteLine();
                 Console.WriteLine("===== EDIT PROFILE =====");
-                Console.WriteLine("1. First Name");
-                Console.WriteLine("2. Last Name");
-                Console.WriteLine("3. Gender");
-                Console.WriteLine("4. Age");
-                Console.WriteLine("5. Date of Birth");
-                Console.WriteLine("6. Email");
-                Console.WriteLine("7. Phone Number");
-                Console.WriteLine("8. Address");
-                Console.WriteLine("9. Country");
-                Console.WriteLine("10. Province");
-                Console.WriteLine("11. Hobby");
-                Console.WriteLine("12. Favorite Game");
-                Console.WriteLine("13. Favorite Anime");
-                Console.WriteLine("14. Pet");
-                Console.WriteLine("15. Weight");
-                Console.WriteLine("16. Height");
-                Console.WriteLine("0. Back to Main Menu");
+                ConsoleHelper.WriteMenu(EditFieldOptions);
                 Console.Write("Choose a field to edit: ");
 
                 string choice = Console.ReadLine()!;
@@ -120,13 +125,13 @@ namespace ProfileManager.Services
                         p.Age = Convert.ToInt32(ConsoleHelper.GetValidInput("Enter Age: ", validators.Age));
                         break;
                     case "5":
-                        p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth));
+                        p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidMaskedInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth, "####-##-##"));
                         break;
                     case "6":
                         p.Email = ConsoleHelper.GetValidInput("Enter Email: ", validators.Email);
                         break;
                     case "7":
-                        p.PhoneNumber = ConsoleHelper.GetValidInput("Enter Phone Number: ", validators.Phone);
+                        p.PhoneNumber = ConsoleHelper.GetValidMaskedInput("Enter Phone Number: ", validators.Phone, "###-###-####");
                         break;
                     case "8":
                         p.Address = ConsoleHelper.GetValidInput("Enter Address: ", validators.Address);

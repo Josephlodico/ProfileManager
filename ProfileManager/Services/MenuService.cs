@@ -1,10 +1,21 @@
 using System.Collections.Generic;
+using ProfileManager.Helpers;
 using ProfileManager.Models;
 
 namespace ProfileManager.Services
 {
     public class MenuService
     {
+        private static readonly string[] MainMenuOptions =
+        [
+            "1. Create New Profile",
+            "2. View a Profile",
+            "3. Edit a Profile",
+            "4. Delete a Profile",
+            "5. Save Profiles to File",
+            "6. Exit",
+        ];
+
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
         {
             while (true)
@@ -12,12 +23,7 @@ namespace ProfileManager.Services
                 Console.WriteLine();
                 Console.WriteLine("===== MENU =====");
                 Console.WriteLine($"You have {profiles.Count} profile(s).");
-                Console.WriteLine("1. Create New Profile");
-                Console.WriteLine("2. View a Profile");
-                Console.WriteLine("3. Edit a Profile");
-                Console.WriteLine("4. Delete a Profile");
-                Console.WriteLine("5. Save Profiles to File");
-                Console.WriteLine("6. Exit");
+                ConsoleHelper.WriteMenu(MainMenuOptions);
                 Console.Write("Choose an option: ");
 
                 string choice = Console.ReadLine()!;
