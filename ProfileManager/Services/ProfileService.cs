@@ -14,19 +14,25 @@ namespace ProfileManager.Services
             "1. First Name",
             "2. Last Name",
             "3. Gender",
-            "4. Age",
-            "5. Date of Birth",
-            "6. Email",
-            "7. Phone Number",
-            "8. Address",
-            "9. Country",
-            "10. Province",
-            "11. Hobby",
-            "12. Favorite Game",
-            "13. Favorite Anime",
-            "14. Pet",
-            "15. Weight",
-            "16. Height",
+            "4. Relationship Status",
+            "5. Age",
+            "6. Date of Birth",
+            "7. Email",
+            "8. Phone Number",
+            "9. Address",
+            "10. Country",
+            "11. Province",
+            "12. Hobby",
+            "13. Favorite Game",
+            "14. Favorite Anime",
+            "15. Pet",
+            "16. Favorite Music Artist",
+            "17. Favorite Movie",
+            "18. Favorite TV Show",
+            "19. Favorite Song",
+            "20. Favorite Sport",
+            "21. Weight",
+            "22. Height",
             "0. Back to Main Menu",
         ];
 
@@ -57,6 +63,8 @@ namespace ProfileManager.Services
             p.LastName = ConsoleHelper.GetValidInput("Enter Last Name: ", validators.Name);
             ConsoleHelper.GetSpacing();
             p.Gender = ConsoleHelper.GetValidInput("Enter Gender: ", validators.Gender);
+            ConsoleHelper.GetSpacing();
+            p.RelationshipStatus = ConsoleHelper.GetValidInput("Enter Relationship Status: ", validators.Text);
             ConsoleHelper.GetSpacing();
             p.Age = Convert.ToInt32(ConsoleHelper.GetValidInput("Enter Age: ", validators.Age));
             ConsoleHelper.GetSpacing();
@@ -93,6 +101,23 @@ namespace ProfileManager.Services
             p.Pets = ConsoleHelper.GetValidInput("Enter your Favorite Pet: ", validators.Text);
             ConsoleHelper.GetSpacing();
 
+            ConsoleHelper.SectionTitle("Entertainment");
+
+            p.MusicArtist = ConsoleHelper.GetValidInput("Enter Favorite Music Artist: ", validators.Text);
+            ConsoleHelper.GetSpacing();
+
+            p.Movie = ConsoleHelper.GetValidInput("Enter Favorite Movie: ", validators.Text);
+            ConsoleHelper.GetSpacing();
+
+            p.TVShow = ConsoleHelper.GetValidInput("Enter Favorite TV Show: ", validators.Text);
+            ConsoleHelper.GetSpacing();
+
+            p.Song = ConsoleHelper.GetValidInput("Enter Favorite Song: ", validators.Text);
+            ConsoleHelper.GetSpacing();
+
+            p.Sport = ConsoleHelper.GetValidInput("Enter Favorite Sport: ", validators.Text);
+            ConsoleHelper.GetSpacing();
+
             ConsoleHelper.SectionTitle("Physical Information");
 
             p.Weight = ConsoleHelper.GetDoubleInput("Enter Weight (kg): ");
@@ -124,42 +149,60 @@ namespace ProfileManager.Services
                         p.Gender = ConsoleHelper.GetValidInput("Enter Gender: ", validators.Gender);
                         break;
                     case "4":
-                        p.Age = Convert.ToInt32(ConsoleHelper.GetValidInput("Enter Age: ", validators.Age));
+                        p.RelationshipStatus = ConsoleHelper.GetValidInput("Enter Relationship Status: ", validators.Text);
                         break;
                     case "5":
-                        p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidMaskedInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth, "####-##-##"));
+                        p.Age = Convert.ToInt32(ConsoleHelper.GetValidInput("Enter Age: ", validators.Age));
                         break;
                     case "6":
-                        p.Email = ConsoleHelper.GetValidInput("Enter Email: ", validators.Email);
+                        p.DateOfBirth = DateTime.Parse(ConsoleHelper.GetValidMaskedInput("Enter Date of Birth (yyyy-MM-dd): ", validators.DateOfBirth, "####-##-##"));
                         break;
                     case "7":
-                        p.PhoneNumber = ConsoleHelper.GetValidMaskedInput("Enter Phone Number: ", validators.Phone, "###-###-####");
+                        p.Email = ConsoleHelper.GetValidInput("Enter Email: ", validators.Email);
                         break;
                     case "8":
-                        p.Address = ConsoleHelper.GetValidInput("Enter Address: ", validators.Address);
+                        p.PhoneNumber = ConsoleHelper.GetValidMaskedInput("Enter Phone Number: ", validators.Phone, "###-###-####");
                         break;
                     case "9":
-                        p.Country = ConsoleHelper.GetValidInput("Enter Country: ", validators.Country);
+                        p.Address = ConsoleHelper.GetValidInput("Enter Address: ", validators.Address);
                         break;
                     case "10":
-                        p.Province = ConsoleHelper.GetValidInput("Enter Province: ", validators.Province);
+                        p.Country = ConsoleHelper.GetValidInput("Enter Country: ", validators.Country);
                         break;
                     case "11":
-                        p.Hobby = ConsoleHelper.GetValidInput("Enter Hobby: ", validators.Text);
+                        p.Province = ConsoleHelper.GetValidInput("Enter Province: ", validators.Province);
                         break;
                     case "12":
-                        p.FavoriteGame = ConsoleHelper.GetValidInput("Enter Favorite Game: ", validators.Text);
+                        p.Hobby = ConsoleHelper.GetValidInput("Enter Hobby: ", validators.Text);
                         break;
                     case "13":
-                        p.FavoriteAnime = ConsoleHelper.GetValidInput("Enter Favorite Anime: ", validators.Text);
+                        p.FavoriteGame = ConsoleHelper.GetValidInput("Enter Favorite Game: ", validators.Text);
                         break;
                     case "14":
-                        p.Pets = ConsoleHelper.GetValidInput("Enter your Favorite Pet: ", validators.Text);
+                        p.FavoriteAnime = ConsoleHelper.GetValidInput("Enter Favorite Anime: ", validators.Text);
                         break;
                     case "15":
-                        p.Weight = ConsoleHelper.GetDoubleInput("Enter Weight (kg): ");
+                        p.Pets = ConsoleHelper.GetValidInput("Enter your Favorite Pet: ", validators.Text);
                         break;
                     case "16":
+                        p.MusicArtist = ConsoleHelper.GetValidInput("Enter Favorite Music Artist: ", validators.Text);
+                        break;
+                    case "17":
+                        p.Movie = ConsoleHelper.GetValidInput("Enter Favorite Movie: ", validators.Text);
+                        break;
+                    case "18":
+                        p.TVShow = ConsoleHelper.GetValidInput("Enter Favorite TV Show: ", validators.Text);
+                        break;
+                    case "19":
+                        p.Song = ConsoleHelper.GetValidInput("Enter Favorite Song: ", validators.Text);
+                        break;
+                    case "20":
+                        p.Sport = ConsoleHelper.GetValidInput("Enter Favorite Sport: ", validators.Text);
+                        break;
+                    case "21":
+                        p.Weight = ConsoleHelper.GetDoubleInput("Enter Weight (kg): ");
+                        break;
+                    case "22":
                         p.Height = ConsoleHelper.GetDoubleInput("Enter Height (cm): ");
                         break;
                     case "0":
@@ -178,6 +221,7 @@ namespace ProfileManager.Services
             sb.AppendLine("===== PROFILE =====");
             sb.AppendLine($"Name: {p.FirstName} {p.LastName}");
             sb.AppendLine($"Gender: {p.Gender}");
+            sb.AppendLine($"Relationship Status: {p.RelationshipStatus}");
             sb.AppendLine($"Age: {p.Age}");
             sb.AppendLine($"Date of Birth: {p.DateOfBirth:yyyy-MM-dd}");
             sb.AppendLine($"Email: {p.Email}");
@@ -189,6 +233,11 @@ namespace ProfileManager.Services
             sb.AppendLine($"Favorite Game: {p.FavoriteGame}");
             sb.AppendLine($"Favorite Anime: {p.FavoriteAnime}");
             sb.AppendLine($"Pet: {p.Pets}");
+            sb.AppendLine($"Favorite Music Artist: {p.MusicArtist}");
+            sb.AppendLine($"Favorite Movie: {p.Movie}");
+            sb.AppendLine($"Favorite TV Show: {p.TVShow}");
+            sb.AppendLine($"Favorite Song: {p.Song}");
+            sb.AppendLine($"Favorite Sport: {p.Sport}");
             sb.AppendLine($"Weight: {p.Weight}");
             sb.AppendLine($"Height: {p.Height}");
 
