@@ -12,7 +12,7 @@ namespace ProfileManager.Services
             "2. View a Profile",
             "3. Edit a Profile",
             "4. Delete a Profile",
-            "5. Save Profiles to File",
+            "5. Save Profiles (JSON)",
             "6. Exit",
         ];
 
@@ -64,9 +64,9 @@ namespace ProfileManager.Services
 
                     case "5":
                         {
-                            string path = ProfileService.SaveProfilesToFile(profiles);
+                            string path = ProfileService.SaveProfilesToJson(profiles);
                             Console.WriteLine($"Profiles saved to {path}");
-                            if (ProfileService.Confirm("Open the file in Notepad now"))
+                            if (ProfileService.Confirm("Open the file now"))
                                 ProfileService.OpenFile(path);
                             break;
                         }
