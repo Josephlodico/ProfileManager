@@ -149,3 +149,9 @@ The original version was a single-file script that collected input with no valid
 
 - Fill in the remaining `Profile` fields (Music, Movie, TV Show, Sport, Relationship Status)
 - Unit tests for each validator
+- Search/filter profiles
+- Sort profiles
+- Duplicate detection
+- Export to CSV
+- Undo delete
+- Profile stats/summary view
