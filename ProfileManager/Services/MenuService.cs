@@ -10,10 +10,11 @@ namespace ProfileManager.Services
         [
             "1. Create New Profile",
             "2. View a Profile",
-            "3. Edit a Profile",
-            "4. Delete a Profile",
-            "5. Save Profiles (JSON)",
-            "6. Exit",
+            "3. Search/Filter Profiles",
+            "4. Edit a Profile",
+            "5. Delete a Profile",
+            "6. Save Profiles (JSON)",
+            "7. Exit",
         ];
 
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
@@ -44,6 +45,10 @@ namespace ProfileManager.Services
                         }
 
                     case "3":
+                        ProfileService.SearchProfiles(profiles);
+                        break;
+
+                    case "4":
                         {
                             int index = ProfileService.SelectProfileIndex(profiles, "edit");
                             if (index >= 0)
@@ -51,7 +56,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "4":
+                    case "5":
                         {
                             int index = ProfileService.SelectProfileIndex(profiles, "delete");
                             if (index >= 0 && ProfileService.Confirm("Are you sure you want to delete this profile"))
@@ -62,7 +67,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "5":
+                    case "6":
                         {
                             string path = ProfileService.SaveProfilesToJson(profiles);
                             Console.WriteLine($"Profiles saved to {path}");
@@ -71,7 +76,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "6":
+                    case "7":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
 

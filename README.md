@@ -19,8 +19,8 @@ ProfileManager/
 │   └── ProfileValidators.cs      # Groups all validator instances into one object passed around the app
 │
 ├── Services/
-│   ├── MenuService.cs            # Main menu loop: Create, View, Edit, Delete, Save (JSON), Exit — operates on a List<Profile>
-│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
+│   ├── MenuService.cs            # Main menu loop: Create, View, Search/Filter, Edit, Delete, Save (JSON), Exit — operates on a List<Profile>
+│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SearchProfiles (filter by field or age range), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
 │
 ├── Validators/                   # One class per field, each implementing IValidator
 │   ├── NameValidator.cs          # Letters only, max 20 chars
@@ -74,10 +74,11 @@ Each validator in the `Validators/` folder has its own rules and error messages 
 You have {n} profile(s).
 1. Create New Profile
 2. View a Profile
-3. Edit a Profile
-4. Delete a Profile
-5. Save Profiles (JSON)
-6. Exit
+3. Search/Filter Profiles
+4. Edit a Profile
+5. Delete a Profile
+6. Save Profiles (JSON)
+7. Exit
 ```
 
 - **Create New Profile** — runs the same field-by-field entry flow as startup and appends the result to the list
@@ -85,6 +86,7 @@ You have {n} profile(s).
   - **View** — reprints the chosen profile
   - **Edit** — opens a sub-menu (also color-coded) listing all 16 editable fields by number; each edit re-runs validation
   - **Delete** — prompts `y/n` confirmation, then removes that profile from the list (`profiles.RemoveAt(index)`)
+- **Search/Filter Profiles** — `ProfileService.SearchProfiles` presents a field menu (First Name, Last Name, Email, Phone Number, Country, Province, or Age Range). Text fields match by case-insensitive substring; Age Range takes a min/max and matches profiles within that inclusive range. Matches are listed by number, and picking one reprints the full profile.
 - **Save Profiles (JSON)** — writes every profile to `Profiles.json` in the working directory (`ProfileService.SaveProfilesToJson`) and, on confirmation, opens it via `ProfileService.OpenFile`. On the next run, `Profiles.json` is auto-loaded on startup, so saved profiles persist across sessions.
 - **Exit** — closes the app
 
@@ -142,6 +144,7 @@ The original version was a single-file script that collected input with no valid
 - Per-field edit support — any of the 16 fields can be updated individually after initial entry
 - Invalid profile-selection input now shows an explicit error message instead of failing silently
 - "Save Profiles (JSON)" writes all profiles to `Profiles.json`, and that file is auto-loaded on the next startup, so profiles now persist across sessions instead of being write-only
+- "Search/Filter Profiles" — a new menu option to find profiles by First Name, Last Name, Email, Phone Number, Country, Province (substring match), or Age Range, with matches selectable to view in full
 
 ---
 
@@ -149,7 +152,6 @@ The original version was a single-file script that collected input with no valid
 
 - Fill in the remaining `Profile` fields (Music, Movie, TV Show, Sport, Relationship Status)
 - Unit tests for each validator
-- Search/filter profiles
 - Sort profiles
 - Duplicate detection
 - Export to CSV

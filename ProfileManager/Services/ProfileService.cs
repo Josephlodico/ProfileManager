@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ProfileManager.Helpers;
@@ -197,6 +198,104 @@ namespace ProfileManager.Services
         public static void DisplayProfile(Profile p)
         {
             Console.Write(FormatProfile(p));
+        }
+
+        private static readonly string[] SearchFieldOptions =
+        [
+            "1. First Name",
+            "2. Last Name",
+            "3. Email",
+            "4. Phone Number",
+            "5. Country",
+            "6. Province",
+            "7. Age Range",
+            "0. Cancel",
+        ];
+
+        public static void SearchProfiles(List<Profile> profiles)
+        {
+            if (profiles.Count == 0)
+            {
+                Console.WriteLine("No profiles to search.");
+                return;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("===== SEARCH / FILTER PROFILES =====");
+            ConsoleHelper.WriteMenu(SearchFieldOptions);
+            Console.Write("Choose a field to search by: ");
+            string choice = Console.ReadLine()!;
+
+            List<Profile> matches;
+
+            switch (choice)
+            {
+                case "1":
+                    matches = FilterByText(profiles, "First Name", p => p.FirstName);
+                    break;
+                case "2":
+                    matches = FilterByText(profiles, "Last Name", p => p.LastName);
+                    break;
+                case "3":
+                    matches = FilterByText(profiles, "Email", p => p.Email);
+                    break;
+                case "4":
+                    matches = FilterByText(profiles, "Phone Number", p => p.PhoneNumber);
+                    break;
+                case "5":
+                    matches = FilterByText(profiles, "Country", p => p.Country);
+                    break;
+                case "6":
+                    matches = FilterByText(profiles, "Province", p => p.Province);
+                    break;
+                case "7":
+                    matches = FilterByAgeRange(profiles);
+                    break;
+                case "0":
+                    return;
+                default:
+                    Console.WriteLine("Invalid option.");
+                    return;
+            }
+
+            if (matches.Count == 0)
+            {
+                Console.WriteLine("No matching profiles found.");
+                return;
+            }
+
+            Console.WriteLine($"Found {matches.Count} matching profile(s):");
+            for (int i = 0; i < matches.Count; i++)
+                Console.WriteLine($"{i + 1}. {matches[i].FirstName} {matches[i].LastName}");
+
+            Console.Write("Enter a number to view that profile (0 to skip): ");
+            string input = Console.ReadLine()!;
+
+            if (input == "0")
+                return;
+
+            if (int.TryParse(input, out int index) && index >= 1 && index <= matches.Count)
+                DisplayProfile(matches[index - 1]);
+            else
+                Console.WriteLine("Invalid selection.");
+        }
+
+        private static List<Profile> FilterByText(List<Profile> profiles, string fieldName, Func<Profile, string?> selector)
+        {
+            Console.Write($"Enter {fieldName} to search for: ");
+            string term = Console.ReadLine()!.Trim();
+
+            return profiles
+                .Where(p => (selector(p) ?? "").Contains(term, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        private static List<Profile> FilterByAgeRange(List<Profile> profiles)
+        {
+            int min = ConsoleHelper.GetIntInput("Enter minimum age: ");
+            int max = ConsoleHelper.GetIntInput("Enter maximum age: ");
+
+            return profiles.Where(p => p.Age >= min && p.Age <= max).ToList();
         }
 
         public static void ListProfiles(List<Profile> profiles)
