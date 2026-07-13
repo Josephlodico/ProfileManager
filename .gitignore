@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# ProfileManager runtime data (generated when saving profiles, not source)
+Profiles.json
+Profiles.txt
