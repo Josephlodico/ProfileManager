@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 using ProfileManager.Helpers;
 using ProfileManager.Models;
 
@@ -235,20 +236,24 @@ namespace ProfileManager.Services
             return -1;
         }
 
-        public static string SaveProfilesToFile(List<Profile> profiles, string fileName = "Profiles.txt")
+        private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
+        public static string SaveProfilesToJson(List<Profile> profiles, string fileName = "Profiles.json")
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-            var sb = new StringBuilder();
-
-            for (int i = 0; i < profiles.Count; i++)
-            {
-                sb.AppendLine($"Profile #{i + 1}");
-                sb.Append(FormatProfile(profiles[i]));
-                sb.AppendLine();
-            }
-
-            File.WriteAllText(path, sb.ToString());
+            File.WriteAllText(path, JsonSerializer.Serialize(profiles, JsonOptions));
             return path;
+        }
+
+        public static List<Profile> LoadProfilesFromJson(string fileName = "Profiles.json")
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+            if (!File.Exists(path))
+                return [];
+
+            string json = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<List<Profile>>(json) ?? [];
         }
 
         public static void OpenFile(string path)

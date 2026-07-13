@@ -24,14 +24,18 @@ namespace ProfileManager
 
             ConsoleHelper.MainTitle();
 
-            var profiles = new List<Profile>
+            var profiles = ProfileService.LoadProfilesFromJson();
+
+            if (profiles.Count == 0)
             {
-                ProfileService.CreateProfile(validators)
-            };
-
-            Console.Clear();
-
-            ProfileService.DisplayProfile(profiles[0]);
+                profiles.Add(ProfileService.CreateProfile(validators));
+                Console.Clear();
+                ProfileService.DisplayProfile(profiles[0]);
+            }
+            else
+            {
+                Console.WriteLine($"Loaded {profiles.Count} saved profile(s) from Profiles.json.");
+            }
 
             MenuService.ShowMenu(profiles, validators);
         }

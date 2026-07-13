@@ -19,8 +19,8 @@ ProfileManager/
 │   └── ProfileValidators.cs      # Groups all validator instances into one object passed around the app
 │
 ├── Services/
-│   ├── MenuService.cs            # Main menu loop: Create, View, Edit, Delete, Save to File, Exit — operates on a List<Profile>
-│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SaveProfilesToFile, OpenFile
+│   ├── MenuService.cs            # Main menu loop: Create, View, Edit, Delete, Save (JSON), Exit — operates on a List<Profile>
+│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
 │
 ├── Validators/                   # One class per field, each implementing IValidator
 │   ├── NameValidator.cs          # Letters only, max 20 chars
@@ -45,8 +45,10 @@ ProfileManager/
 `UserProfileSystem.cs` is the entry point. It:
 - Instantiates all validators and groups them into a `ProfileValidators` object
 - Shows the main title banner via `ConsoleHelper.MainTitle()`
-- Builds a `List<Profile>`, seeded with one profile from `ProfileService.CreateProfile(validators)`, which steps through each field section by section (Profile Info → Contact → Location → Interests → Physical), prompting the user and validating every input before moving on
-- Displays that first profile, then hands off to `MenuService.ShowMenu(profiles, validators)`, which manages the full list for the rest of the session
+- Tries to load existing profiles via `ProfileService.LoadProfilesFromJson()` (reads `Profiles.json` from the working directory, if present)
+- If none were loaded, builds a `List<Profile>` seeded with one profile from `ProfileService.CreateProfile(validators)`, which steps through each field section by section (Profile Info → Contact → Location → Interests → Physical), prompting the user and validating every input before moving on, and displays it
+- If profiles were loaded, skips profile creation and prints how many were restored
+- Either way, hands off to `MenuService.ShowMenu(profiles, validators)`, which manages the full list for the rest of the session
 
 ### 2. Validation System
 Every field (except Weight and Height, which use `GetDoubleInput`) goes through `ConsoleHelper.GetValidInput(prompt, validator)` or, for Date of Birth and Phone Number, `ConsoleHelper.GetValidMaskedInput(prompt, validator, mask)`. Both loop until the user provides input that passes the validator's `IsValid()` check, printing a specific error message on each failure. The masked variant auto-inserts dashes as the user types, using masks `####-##-##` (date) and `###-###-####` (phone), so those two fields never need to be typed manually.
@@ -74,7 +76,7 @@ You have {n} profile(s).
 2. View a Profile
 3. Edit a Profile
 4. Delete a Profile
-5. Save Profiles to File
+5. Save Profiles (JSON)
 6. Exit
 ```
 
@@ -83,7 +85,7 @@ You have {n} profile(s).
   - **View** — reprints the chosen profile
   - **Edit** — opens a sub-menu (also color-coded) listing all 16 editable fields by number; each edit re-runs validation
   - **Delete** — prompts `y/n` confirmation, then removes that profile from the list (`profiles.RemoveAt(index)`)
-- **Save Profiles to File** — writes every profile to `Profiles.txt` in the working directory (`ProfileService.SaveProfilesToFile`) and, on confirmation, opens it in the default text editor via `ProfileService.OpenFile`
+- **Save Profiles (JSON)** — writes every profile to `Profiles.json` in the working directory (`ProfileService.SaveProfilesToJson`) and, on confirmation, opens it via `ProfileService.OpenFile`. On the next run, `Profiles.json` is auto-loaded on startup, so saved profiles persist across sessions.
 - **Exit** — closes the app
 
 ---
@@ -137,14 +139,13 @@ The original version was a single-file script that collected input with no valid
 - `ProfileService` handling profile creation, display, edit, confirmation, profile selection, and file save/open logic
 - `MenuService` providing a persistent, color-coded main menu with Create / View / Edit / Delete / Save to File / Exit
 - Support for multiple profiles (`List<Profile>`), with pick-by-number selection for View/Edit/Delete and a live profile count on the menu
-- "Save Profiles to File" writes all profiles to `Profiles.txt` and offers to open it in the default text editor
 - Per-field edit support — any of the 16 fields can be updated individually after initial entry
 - Invalid profile-selection input now shows an explicit error message instead of failing silently
+- "Save Profiles (JSON)" writes all profiles to `Profiles.json`, and that file is auto-loaded on the next startup, so profiles now persist across sessions instead of being write-only
 
 ---
 
 ## Future Ideas
 
-- Save profiles in a structured format (e.g. JSON) and reload them on startup, instead of the current write-only `Profiles.txt`
 - Fill in the remaining `Profile` fields (Music, Movie, TV Show, Sport, Relationship Status)
 - Unit tests for each validator
