@@ -29,7 +29,7 @@ namespace ProfileManager
             if (profiles.Count == 0)
             {
                 profiles.Add(ProfileService.CreateProfile(validators));
-                Console.Clear();
+                ConsoleHelper.TryClear();
                 ProfileService.DisplayProfile(profiles[0]);
             }
             else

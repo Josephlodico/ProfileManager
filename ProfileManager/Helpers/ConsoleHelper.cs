@@ -70,14 +70,25 @@ namespace ProfileManager.Helpers
             Console.WriteLine("------------------------------------------");
         }
 
+        public static void TryClear()
+        {
+            try { Console.Clear(); } catch (IOException) { }
+        }
+
+        private static int GetWindowWidth()
+        {
+            try { return Console.WindowWidth; } catch (IOException) { return 80; }
+        }
+
         public static void MainTitle()
         {
-            Console.Clear();
+            TryClear();
             string title = "PROFILE MANAGER";
-            Console.WriteLine(new string('=', Console.WindowWidth));
-            int spaces = (Console.WindowWidth - title.Length) / 2;
+            int width = GetWindowWidth();
+            Console.WriteLine(new string('=', width));
+            int spaces = (width - title.Length) / 2;
             Console.WriteLine(new string(' ', spaces) + title);
-            Console.WriteLine(new string('=', Console.WindowWidth));
+            Console.WriteLine(new string('=', width));
         }
 
         // Prints each menu option in a different color, cycling through the palette.
