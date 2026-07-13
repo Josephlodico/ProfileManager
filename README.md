@@ -46,7 +46,7 @@ ProfileManager/
 - Instantiates all validators and groups them into a `ProfileValidators` object
 - Shows the main title banner via `ConsoleHelper.MainTitle()`
 - Tries to load existing profiles via `ProfileService.LoadProfilesFromJson()` (reads `Profiles.json` from the working directory, if present)
-- If none were loaded, builds a `List<Profile>` seeded with one profile from `ProfileService.CreateProfile(validators)`, which steps through each field section by section (Profile Info → Contact → Location → Interests → Physical), prompting the user and validating every input before moving on, and displays it
+- If none were loaded, builds a `List<Profile>` seeded with one profile from `ProfileService.CreateProfile(validators)`, which steps through each field section by section (Profile Info → Contact → Location → Interests → Entertainment → Physical), prompting the user and validating every input before moving on, and displays it
 - If profiles were loaded, skips profile creation and prints how many were restored
 - Either way, hands off to `MenuService.ShowMenu(profiles, validators)`, which manages the full list for the rest of the session
 
@@ -84,7 +84,7 @@ You have {n} profile(s).
 - **Create New Profile** — runs the same field-by-field entry flow as startup and appends the result to the list
 - **View / Edit / Delete a Profile** — each first calls `ProfileService.SelectProfileIndex`, which lists all profiles by number (`ListProfiles`) and prompts for a pick (`0` cancels; non-numeric or out-of-range input prints "Invalid selection.")
   - **View** — reprints the chosen profile
-  - **Edit** — opens a sub-menu (also color-coded) listing all 16 editable fields by number; each edit re-runs validation
+  - **Edit** — opens a sub-menu (also color-coded) listing all 22 editable fields by number; each edit re-runs validation
   - **Delete** — prompts `y/n` confirmation, then removes that profile from the list (`profiles.RemoveAt(index)`)
 - **Search/Filter Profiles** — `ProfileService.SearchProfiles` presents a field menu (First Name, Last Name, Email, Phone Number, Country, Province, or Age Range). Text fields match by case-insensitive substring; Age Range takes a min/max and matches profiles within that inclusive range. Matches are listed by number, and picking one reprints the full profile.
 - **Save Profiles (JSON)** — writes every profile to `Profiles.json` in the working directory (`ProfileService.SaveProfilesToJson`) and, on confirmation, opens it via `ProfileService.OpenFile`. On the next run, `Profiles.json` is auto-loaded on startup, so saved profiles persist across sessions.
@@ -99,6 +99,7 @@ You have {n} profile(s).
 | Personal | First Name | `string` | Letters only, max 20 chars |
 | Personal | Last Name | `string` | Letters only, max 20 chars |
 | Personal | Gender | `string` | GenderValidator |
+| Personal | Relationship Status | `string` | Non-empty |
 | Personal | Age | `int` | Number, 0–120 |
 | Personal | Date of Birth | `DateTime` | Format `yyyy-MM-dd` (dashes auto-inserted while typing), not in future |
 | Contact | Email | `string` | Must have `@`, valid local/domain |
@@ -110,10 +111,13 @@ You have {n} profile(s).
 | Interests | Favorite Game | `string` | Non-empty |
 | Interests | Favorite Anime | `string` | Non-empty |
 | Interests | Pet | `string` | Non-empty |
+| Entertainment | Favorite Music Artist | `string` | Non-empty |
+| Entertainment | Favorite Movie | `string` | Non-empty |
+| Entertainment | Favorite TV Show | `string` | Non-empty |
+| Entertainment | Favorite Song | `string` | Non-empty |
+| Entertainment | Favorite Sport | `string` | Non-empty |
 | Physical | Weight (kg) | `double` | Must be a valid number |
 | Physical | Height (cm) | `double` | Must be a valid number |
-
-> The `Profile` model also contains fields for `RelationshipStatus`, `MusicArtist`, `Movie`, `TVShow`, `Song`, and `Sport` — these are defined but not yet wired into the input flow.
 
 ---
 
@@ -141,16 +145,16 @@ The original version was a single-file script that collected input with no valid
 - `ProfileService` handling profile creation, display, edit, confirmation, profile selection, and file save/open logic
 - `MenuService` providing a persistent, color-coded main menu with Create / View / Edit / Delete / Save to File / Exit
 - Support for multiple profiles (`List<Profile>`), with pick-by-number selection for View/Edit/Delete and a live profile count on the menu
-- Per-field edit support — any of the 16 fields can be updated individually after initial entry
+- Per-field edit support — any of the 22 fields can be updated individually after initial entry
 - Invalid profile-selection input now shows an explicit error message instead of failing silently
 - "Save Profiles (JSON)" writes all profiles to `Profiles.json`, and that file is auto-loaded on the next startup, so profiles now persist across sessions instead of being write-only
 - "Search/Filter Profiles" — a new menu option to find profiles by First Name, Last Name, Email, Phone Number, Country, Province (substring match), or Age Range, with matches selectable to view in full
+- Filled in the remaining `Profile` fields — Relationship Status is now collected alongside Personal info, and a new Entertainment section collects Favorite Music Artist, Movie, TV Show, Song, and Sport during creation and editing
 
 ---
 
 ## Future Ideas
 
-- Fill in the remaining `Profile` fields (Music, Movie, TV Show, Sport, Relationship Status)
 - Unit tests for each validator
 - Sort profiles
 - Duplicate detection
