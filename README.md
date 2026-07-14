@@ -171,3 +171,5 @@ The original version was a single-file script that collected input with no valid
 ## Future Ideas
 
 - Unit tests for each validator
+- Relabel "Province" prompts/fields as "Province/State" (or similar) so US users aren't confused by Canadian-specific terminology
+- Polish console formatting/readability — consistent borders and spacing (e.g. `======`/`------` separators) across menus, prompts, and profile output so the layout looks uniform instead of ad hoc
