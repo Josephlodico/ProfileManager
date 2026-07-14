@@ -20,7 +20,7 @@ ProfileManager/
 │
 ├── Services/
 │   ├── MenuService.cs            # Main menu loop: Create, View, Search/Filter, Edit, Delete, Find Duplicates, Save (JSON), Exit — operates on a List<Profile>
-│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SearchProfiles (filter by field or age range), FindMatchesForNewProfile/FindDuplicateGroups/FindAndDisplayDuplicates (duplicate detection), SortProfiles (sort by field, ascending/descending), ShowProfileStats (aggregate stats/summary), RecordDeletion/TryUndoDelete (undo delete), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
+│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SearchProfiles (filter by field or age range), FindMatchesForNewProfile/FindDuplicateGroups/FindAndDisplayDuplicates (duplicate detection), SortProfiles (sort by field, ascending/descending), ShowProfileStats (aggregate stats/summary), RecordDeletion/TryUndoDelete (undo delete), SaveProfilesToJson/LoadProfilesFromJson, ExportProfilesToCsv (CSV export), OpenFile
 │
 ├── Validators/                   # One class per field, each implementing IValidator
 │   ├── NameValidator.cs          # Letters only, max 20 chars
@@ -82,7 +82,8 @@ You have {n} profile(s).
 8. Sort Profiles
 9. Profile Stats/Summary View
 10. Save Profiles (JSON)
-11. Exit
+11. Export Profiles (CSV)
+12. Exit
 ```
 
 - **Create New Profile** — runs the same field-by-field entry flow as startup, then checks the new entry against existing profiles (`ProfileService.FindMatchesForNewProfile`); if a likely duplicate is found (same Email, same Phone Number, or same First+Last Name and Date of Birth), it warns the user and asks for `y/n` confirmation before adding it to the list
@@ -96,6 +97,7 @@ You have {n} profile(s).
 - **Sort Profiles** — `ProfileService.SortProfiles` presents a field menu (First Name, Last Name, Age, Date of Birth, Country, or Province), asks for ascending or descending order, then sorts the in-memory profile list in place and reprints it
 - **Profile Stats/Summary View** — `ProfileService.ShowProfileStats` prints an aggregate summary across all profiles: total count, average/min/max Age, average Weight and Height, a Gender/Relationship Status/Country breakdown (counts and percentages), and the most common Favorite Hobby, Game, Anime, Pet, Music Artist, Movie, TV Show, Song, and Sport
 - **Save Profiles (JSON)** — writes every profile to `Profiles.json` in the working directory (`ProfileService.SaveProfilesToJson`) and, on confirmation, opens it via `ProfileService.OpenFile`. On the next run, `Profiles.json` is auto-loaded on startup, so saved profiles persist across sessions.
+- **Export Profiles (CSV)** — `ProfileService.ExportProfilesToCsv` writes every profile as a row to `Profiles.csv` in the working directory (one column per field, values containing a comma/quote/newline are quoted and escaped) and, on confirmation, opens it via `ProfileService.OpenFile`. This is a one-way export for spreadsheets — `Profiles.csv` is never read back in.
 - **Exit** — closes the app
 
 ---
@@ -162,10 +164,10 @@ The original version was a single-file script that collected input with no valid
 - "Sort Profiles" — a new menu option to sort the profile list by First Name, Last Name, Age, Date of Birth, Country, or Province, in ascending or descending order
 - "Profile Stats/Summary View" — a new menu option showing aggregate stats across all profiles: total count, Age/Weight/Height averages, Gender/Relationship Status/Country breakdowns, and the most common favorite in each Entertainment/Interests category
 - "Undo Delete" — a new menu option that restores the most recently deleted profile to its original position in the list; deletions are tracked on an in-memory stack for the current session
+- "Export Profiles (CSV)" — a new menu option that writes all profiles to `Profiles.csv`, one row per profile with a header row, properly quoting values that contain commas, quotes, or newlines
 
 ---
 
 ## Future Ideas
 
 - Unit tests for each validator
-- Export to CSV

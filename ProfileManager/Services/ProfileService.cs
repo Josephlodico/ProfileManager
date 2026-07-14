@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using ProfileManager.Helpers;
@@ -640,6 +641,66 @@ namespace ProfileManager.Services
 
             string json = File.ReadAllText(path);
             return JsonSerializer.Deserialize<List<Profile>>(json) ?? [];
+        }
+
+        private static readonly string[] CsvColumns =
+        [
+            "First Name", "Last Name", "Gender", "Relationship Status", "Age", "Date of Birth",
+            "Email", "Phone Number", "Address", "Country", "Province", "Hobby", "Favorite Game",
+            "Favorite Anime", "Pet", "Favorite Music Artist", "Favorite Movie", "Favorite TV Show",
+            "Favorite Song", "Favorite Sport", "Weight", "Height",
+        ];
+
+        public static string ExportProfilesToCsv(List<Profile> profiles, string fileName = "Profiles.csv")
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+            var sb = new StringBuilder();
+            sb.AppendLine(string.Join(",", CsvColumns));
+
+            foreach (var p in profiles)
+            {
+                string[] fields =
+                [
+                    CsvEscape(p.FirstName),
+                    CsvEscape(p.LastName),
+                    CsvEscape(p.Gender),
+                    CsvEscape(p.RelationshipStatus),
+                    p.Age.ToString(CultureInfo.InvariantCulture),
+                    p.DateOfBirth.ToString("yyyy-MM-dd"),
+                    CsvEscape(p.Email),
+                    CsvEscape(p.PhoneNumber),
+                    CsvEscape(p.Address),
+                    CsvEscape(p.Country),
+                    CsvEscape(p.Province),
+                    CsvEscape(p.Hobby),
+                    CsvEscape(p.FavoriteGame),
+                    CsvEscape(p.FavoriteAnime),
+                    CsvEscape(p.Pets),
+                    CsvEscape(p.MusicArtist),
+                    CsvEscape(p.Movie),
+                    CsvEscape(p.TVShow),
+                    CsvEscape(p.Song),
+                    CsvEscape(p.Sport),
+                    p.Weight.ToString(CultureInfo.InvariantCulture),
+                    p.Height.ToString(CultureInfo.InvariantCulture),
+                ];
+
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            File.WriteAllText(path, sb.ToString());
+            return path;
+        }
+
+        private static string CsvEscape(string? value)
+        {
+            value ??= "";
+
+            if (value.Contains(',') || value.Contains('"') || value.Contains('\n'))
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+
+            return value;
         }
 
         public static void OpenFile(string path)
