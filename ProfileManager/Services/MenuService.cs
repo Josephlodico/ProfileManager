@@ -13,8 +13,9 @@ namespace ProfileManager.Services
             "3. Search/Filter Profiles",
             "4. Edit a Profile",
             "5. Delete a Profile",
-            "6. Save Profiles (JSON)",
-            "7. Exit",
+            "6. Find Duplicate Profiles",
+            "7. Save Profiles (JSON)",
+            "8. Exit",
         ];
 
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
@@ -32,9 +33,28 @@ namespace ProfileManager.Services
                 switch (choice)
                 {
                     case "1":
-                        profiles.Add(ProfileService.CreateProfile(validators));
-                        Console.WriteLine("Profile created.");
-                        break;
+                        {
+                            var newProfile = ProfileService.CreateProfile(validators);
+                            var duplicates = ProfileService.FindMatchesForNewProfile(profiles, newProfile);
+
+                            if (duplicates.Count > 0)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine($"Warning: this looks like a possible duplicate of {duplicates.Count} existing profile(s):");
+                                foreach (var d in duplicates)
+                                    Console.WriteLine($"- {d.FirstName} {d.LastName} | Email: {d.Email} | Phone: {d.PhoneNumber}");
+
+                                if (!ProfileService.Confirm("Add this profile anyway"))
+                                {
+                                    Console.WriteLine("Profile creation cancelled.");
+                                    break;
+                                }
+                            }
+
+                            profiles.Add(newProfile);
+                            Console.WriteLine("Profile created.");
+                            break;
+                        }
 
                     case "2":
                         {
@@ -68,6 +88,10 @@ namespace ProfileManager.Services
                         }
 
                     case "6":
+                        ProfileService.FindAndDisplayDuplicates(profiles);
+                        break;
+
+                    case "7":
                         {
                             string path = ProfileService.SaveProfilesToJson(profiles);
                             Console.WriteLine($"Profiles saved to {path}");
@@ -76,7 +100,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "7":
+                    case "8":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
 

@@ -347,6 +347,93 @@ namespace ProfileManager.Services
             return profiles.Where(p => p.Age >= min && p.Age <= max).ToList();
         }
 
+        private static bool IsDuplicate(Profile a, Profile b)
+        {
+            if (!string.IsNullOrWhiteSpace(a.Email) && string.Equals(a.Email, b.Email, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrWhiteSpace(a.PhoneNumber) && string.Equals(a.PhoneNumber, b.PhoneNumber, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (!string.IsNullOrWhiteSpace(a.FirstName) && !string.IsNullOrWhiteSpace(a.LastName) &&
+                string.Equals(a.FirstName, b.FirstName, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(a.LastName, b.LastName, StringComparison.OrdinalIgnoreCase) &&
+                a.DateOfBirth == b.DateOfBirth)
+                return true;
+
+            return false;
+        }
+
+        public static List<Profile> FindMatchesForNewProfile(List<Profile> profiles, Profile candidate)
+        {
+            return profiles.Where(p => IsDuplicate(p, candidate)).ToList();
+        }
+
+        public static List<List<Profile>> FindDuplicateGroups(List<Profile> profiles)
+        {
+            var groups = new List<List<Profile>>();
+            var seen = new HashSet<Profile>();
+
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                if (seen.Contains(profiles[i]))
+                    continue;
+
+                var group = new List<Profile> { profiles[i] };
+
+                for (int j = i + 1; j < profiles.Count; j++)
+                {
+                    if (seen.Contains(profiles[j]))
+                        continue;
+
+                    if (IsDuplicate(profiles[i], profiles[j]))
+                    {
+                        group.Add(profiles[j]);
+                        seen.Add(profiles[j]);
+                    }
+                }
+
+                if (group.Count > 1)
+                {
+                    groups.Add(group);
+                    seen.Add(profiles[i]);
+                }
+            }
+
+            return groups;
+        }
+
+        public static void FindAndDisplayDuplicates(List<Profile> profiles)
+        {
+            if (profiles.Count == 0)
+            {
+                Console.WriteLine("No profiles to check.");
+                return;
+            }
+
+            var groups = FindDuplicateGroups(profiles);
+
+            if (groups.Count == 0)
+            {
+                Console.WriteLine("No duplicate profiles found.");
+                return;
+            }
+
+            Console.WriteLine($"Found {groups.Count} group(s) of possible duplicates:");
+
+            for (int g = 0; g < groups.Count; g++)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"--- Duplicate Group {g + 1} ---");
+
+                foreach (var p in groups[g])
+                {
+                    int index = profiles.IndexOf(p);
+                    Console.WriteLine($"{index + 1}. {p.FirstName} {p.LastName} | Email: {p.Email} | Phone: {p.PhoneNumber} | DOB: {p.DateOfBirth:yyyy-MM-dd}");
+                }
+            }
+        }
+
         public static void ListProfiles(List<Profile> profiles)
         {
             Console.WriteLine($"You have {profiles.Count} profile(s).");
