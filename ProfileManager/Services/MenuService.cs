@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ProfileManager.Helpers;
 using ProfileManager.Models;
 
@@ -14,8 +13,9 @@ namespace ProfileManager.Services
             "4. Edit a Profile",
             "5. Delete a Profile",
             "6. Find Duplicate Profiles",
-            "7. Save Profiles (JSON)",
-            "8. Exit",
+            "7. Sort Profiles",
+            "8. Save Profiles (JSON)",
+            "9. Exit",
         ];
 
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
@@ -92,6 +92,10 @@ namespace ProfileManager.Services
                         break;
 
                     case "7":
+                        ProfileService.SortProfiles(profiles);
+                        break;
+
+                    case "8":
                         {
                             string path = ProfileService.SaveProfilesToJson(profiles);
                             Console.WriteLine($"Profiles saved to {path}");
@@ -100,7 +104,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "8":
+                    case "9":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
 
