@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ProfileManager.Helpers;
@@ -432,6 +431,71 @@ namespace ProfileManager.Services
                     Console.WriteLine($"{index + 1}. {p.FirstName} {p.LastName} | Email: {p.Email} | Phone: {p.PhoneNumber} | DOB: {p.DateOfBirth:yyyy-MM-dd}");
                 }
             }
+        }
+
+        private static readonly string[] SortFieldOptions =
+        [
+            "1. First Name",
+            "2. Last Name",
+            "3. Age",
+            "4. Date of Birth",
+            "5. Country",
+            "6. Province",
+            "0. Cancel",
+        ];
+
+        public static void SortProfiles(List<Profile> profiles)
+        {
+            if (profiles.Count == 0)
+            {
+                Console.WriteLine("No profiles to sort.");
+                return;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("===== SORT PROFILES =====");
+            ConsoleHelper.WriteMenu(SortFieldOptions);
+            Console.Write("Choose a field to sort by: ");
+            string choice = Console.ReadLine()!;
+
+            Comparison<Profile> comparison;
+
+            switch (choice)
+            {
+                case "1":
+                    comparison = (a, b) => string.Compare(a.FirstName, b.FirstName, StringComparison.OrdinalIgnoreCase);
+                    break;
+                case "2":
+                    comparison = (a, b) => string.Compare(a.LastName, b.LastName, StringComparison.OrdinalIgnoreCase);
+                    break;
+                case "3":
+                    comparison = (a, b) => a.Age.CompareTo(b.Age);
+                    break;
+                case "4":
+                    comparison = (a, b) => a.DateOfBirth.CompareTo(b.DateOfBirth);
+                    break;
+                case "5":
+                    comparison = (a, b) => string.Compare(a.Country, b.Country, StringComparison.OrdinalIgnoreCase);
+                    break;
+                case "6":
+                    comparison = (a, b) => string.Compare(a.Province, b.Province, StringComparison.OrdinalIgnoreCase);
+                    break;
+                case "0":
+                    return;
+                default:
+                    Console.WriteLine("Invalid option.");
+                    return;
+            }
+
+            if (!Confirm("Sort ascending"))
+            {
+                var ascending = comparison;
+                comparison = (a, b) => ascending(b, a);
+            }
+
+            profiles.Sort(comparison);
+            Console.WriteLine("Profiles sorted.");
+            ListProfiles(profiles);
         }
 
         public static void ListProfiles(List<Profile> profiles)

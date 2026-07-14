@@ -20,7 +20,7 @@ ProfileManager/
 │
 ├── Services/
 │   ├── MenuService.cs            # Main menu loop: Create, View, Search/Filter, Edit, Delete, Find Duplicates, Save (JSON), Exit — operates on a List<Profile>
-│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SearchProfiles (filter by field or age range), FindMatchesForNewProfile/FindDuplicateGroups/FindAndDisplayDuplicates (duplicate detection), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
+│   └── ProfileService.cs         # CreateProfile, DisplayProfile, EditProfile, Confirm (y/n prompt), profile picker (SelectProfileIndex/ListProfiles), SearchProfiles (filter by field or age range), FindMatchesForNewProfile/FindDuplicateGroups/FindAndDisplayDuplicates (duplicate detection), SortProfiles (sort by field, ascending/descending), SaveProfilesToJson/LoadProfilesFromJson, OpenFile
 │
 ├── Validators/                   # One class per field, each implementing IValidator
 │   ├── NameValidator.cs          # Letters only, max 20 chars
@@ -78,8 +78,9 @@ You have {n} profile(s).
 4. Edit a Profile
 5. Delete a Profile
 6. Find Duplicate Profiles
-7. Save Profiles (JSON)
-8. Exit
+7. Sort Profiles
+8. Save Profiles (JSON)
+9. Exit
 ```
 
 - **Create New Profile** — runs the same field-by-field entry flow as startup, then checks the new entry against existing profiles (`ProfileService.FindMatchesForNewProfile`); if a likely duplicate is found (same Email, same Phone Number, or same First+Last Name and Date of Birth), it warns the user and asks for `y/n` confirmation before adding it to the list
@@ -89,6 +90,7 @@ You have {n} profile(s).
   - **Delete** — prompts `y/n` confirmation, then removes that profile from the list (`profiles.RemoveAt(index)`)
 - **Search/Filter Profiles** — `ProfileService.SearchProfiles` presents a field menu (First Name, Last Name, Email, Phone Number, Country, Province, or Age Range). Text fields match by case-insensitive substring; Age Range takes a min/max and matches profiles within that inclusive range. Matches are listed by number, and picking one reprints the full profile.
 - **Find Duplicate Profiles** — `ProfileService.FindAndDisplayDuplicates` scans the whole list and groups profiles that share an Email, a Phone Number, or a First+Last Name and Date of Birth, then prints each group so the user can decide which entries to edit or delete
+- **Sort Profiles** — `ProfileService.SortProfiles` presents a field menu (First Name, Last Name, Age, Date of Birth, Country, or Province), asks for ascending or descending order, then sorts the in-memory profile list in place and reprints it
 - **Save Profiles (JSON)** — writes every profile to `Profiles.json` in the working directory (`ProfileService.SaveProfilesToJson`) and, on confirmation, opens it via `ProfileService.OpenFile`. On the next run, `Profiles.json` is auto-loaded on startup, so saved profiles persist across sessions.
 - **Exit** — closes the app
 
@@ -153,13 +155,13 @@ The original version was a single-file script that collected input with no valid
 - "Search/Filter Profiles" — a new menu option to find profiles by First Name, Last Name, Email, Phone Number, Country, Province (substring match), or Age Range, with matches selectable to view in full
 - Filled in the remaining `Profile` fields — Relationship Status is now collected alongside Personal info, and a new Entertainment section collects Favorite Music Artist, Movie, TV Show, Song, and Sport during creation and editing
 - Duplicate detection — creating a new profile now warns if it matches an existing one on Email, Phone Number, or First+Last Name and Date of Birth, and a new "Find Duplicate Profiles" menu option scans the whole list and reports every duplicate group
+- "Sort Profiles" — a new menu option to sort the profile list by First Name, Last Name, Age, Date of Birth, Country, or Province, in ascending or descending order
 
 ---
 
 ## Future Ideas
 
 - Unit tests for each validator
-- Sort profiles
 - Export to CSV
 - Undo delete
 - Profile stats/summary view
