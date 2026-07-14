@@ -498,6 +498,71 @@ namespace ProfileManager.Services
             ListProfiles(profiles);
         }
 
+        public static void ShowProfileStats(List<Profile> profiles)
+        {
+            if (profiles.Count == 0)
+            {
+                Console.WriteLine("No profiles to summarize.");
+                return;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("===== PROFILE STATS =====");
+            Console.WriteLine($"Total Profiles: {profiles.Count}");
+            Console.WriteLine();
+
+            Console.WriteLine($"Age    - Average: {profiles.Average(p => p.Age):F1}, Min: {profiles.Min(p => p.Age)}, Max: {profiles.Max(p => p.Age)}");
+            Console.WriteLine($"Weight - Average: {profiles.Average(p => p.Weight):F1} kg");
+            Console.WriteLine($"Height - Average: {profiles.Average(p => p.Height):F1} cm");
+            Console.WriteLine();
+
+            PrintBreakdown(profiles, "Gender", p => p.Gender);
+            PrintBreakdown(profiles, "Relationship Status", p => p.RelationshipStatus);
+            PrintBreakdown(profiles, "Country", p => p.Country);
+
+            PrintMostCommon(profiles, "Favorite Hobby", p => p.Hobby);
+            PrintMostCommon(profiles, "Favorite Game", p => p.FavoriteGame);
+            PrintMostCommon(profiles, "Favorite Anime", p => p.FavoriteAnime);
+            PrintMostCommon(profiles, "Favorite Pet", p => p.Pets);
+            PrintMostCommon(profiles, "Favorite Music Artist", p => p.MusicArtist);
+            PrintMostCommon(profiles, "Favorite Movie", p => p.Movie);
+            PrintMostCommon(profiles, "Favorite TV Show", p => p.TVShow);
+            PrintMostCommon(profiles, "Favorite Song", p => p.Song);
+            PrintMostCommon(profiles, "Favorite Sport", p => p.Sport);
+        }
+
+        private static void PrintBreakdown(List<Profile> profiles, string label, Func<Profile, string?> selector)
+        {
+            Console.WriteLine($"{label} Breakdown:");
+
+            var groups = profiles
+                .GroupBy(p => string.IsNullOrWhiteSpace(selector(p)) ? "(unspecified)" : selector(p), StringComparer.OrdinalIgnoreCase)
+                .OrderByDescending(g => g.Count());
+
+            foreach (var group in groups)
+            {
+                double percent = group.Count() * 100.0 / profiles.Count;
+                Console.WriteLine($"  {group.Key}: {group.Count()} ({percent:F0}%)");
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void PrintMostCommon(List<Profile> profiles, string label, Func<Profile, string?> selector)
+        {
+            var mostCommon = profiles
+                .Select(selector)
+                .Where(v => !string.IsNullOrWhiteSpace(v))
+                .GroupBy(v => v, StringComparer.OrdinalIgnoreCase)
+                .OrderByDescending(g => g.Count())
+                .FirstOrDefault();
+
+            if (mostCommon == null)
+                Console.WriteLine($"{label}: (no data)");
+            else
+                Console.WriteLine($"{label}: {mostCommon.Key} ({mostCommon.Count()} profile(s))");
+        }
+
         public static void ListProfiles(List<Profile> profiles)
         {
             Console.WriteLine($"You have {profiles.Count} profile(s).");

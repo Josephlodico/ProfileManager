@@ -14,8 +14,9 @@ namespace ProfileManager.Services
             "5. Delete a Profile",
             "6. Find Duplicate Profiles",
             "7. Sort Profiles",
-            "8. Save Profiles (JSON)",
-            "9. Exit",
+            "8. Profile Stats/Summary View",
+            "9. Save Profiles (JSON)",
+            "10. Exit",
         ];
 
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
@@ -96,6 +97,10 @@ namespace ProfileManager.Services
                         break;
 
                     case "8":
+                        ProfileService.ShowProfileStats(profiles);
+                        break;
+
+                    case "9":
                         {
                             string path = ProfileService.SaveProfilesToJson(profiles);
                             Console.WriteLine($"Profiles saved to {path}");
@@ -104,7 +109,7 @@ namespace ProfileManager.Services
                             break;
                         }
 
-                    case "9":
+                    case "10":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
 
