@@ -17,7 +17,8 @@ namespace ProfileManager.Services
             "8. Sort Profiles",
             "9. Profile Stats/Summary View",
             "10. Save Profiles (JSON)",
-            "11. Exit",
+            "11. Export Profiles (CSV)",
+            "12. Exit",
         ];
 
         public static void ShowMenu(List<Profile> profiles, ProfileValidators validators)
@@ -117,6 +118,21 @@ namespace ProfileManager.Services
                         }
 
                     case "11":
+                        {
+                            if (profiles.Count == 0)
+                            {
+                                Console.WriteLine("No profiles to export.");
+                                break;
+                            }
+
+                            string path = ProfileService.ExportProfilesToCsv(profiles);
+                            Console.WriteLine($"Profiles exported to {path}");
+                            if (ProfileService.Confirm("Open the file now"))
+                                ProfileService.OpenFile(path);
+                            break;
+                        }
+
+                    case "12":
                         Console.WriteLine("Exiting Profile Manager...");
                         return;
 
