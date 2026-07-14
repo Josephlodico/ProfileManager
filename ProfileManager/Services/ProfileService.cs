@@ -563,6 +563,28 @@ namespace ProfileManager.Services
                 Console.WriteLine($"{label}: {mostCommon.Key} ({mostCommon.Count()} profile(s))");
         }
 
+        private static readonly Stack<(Profile Profile, int Index)> DeletedProfiles = new();
+
+        public static void RecordDeletion(Profile profile, int index)
+        {
+            DeletedProfiles.Push((profile, index));
+        }
+
+        public static bool TryUndoDelete(List<Profile> profiles)
+        {
+            if (DeletedProfiles.Count == 0)
+            {
+                Console.WriteLine("Nothing to undo.");
+                return false;
+            }
+
+            var (profile, index) = DeletedProfiles.Pop();
+            int insertIndex = Math.Min(index, profiles.Count);
+            profiles.Insert(insertIndex, profile);
+            Console.WriteLine($"Restored: {profile.FirstName} {profile.LastName}");
+            return true;
+        }
+
         public static void ListProfiles(List<Profile> profiles)
         {
             Console.WriteLine($"You have {profiles.Count} profile(s).");
